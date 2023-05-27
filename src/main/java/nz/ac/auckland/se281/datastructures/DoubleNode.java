@@ -8,6 +8,7 @@ public class DoubleNode<T> {
   public DoubleNode(T data) {
     this.next = null;
     this.previous = null;
+    this.value = data;
   }
 
   public void setNext(DoubleNode<T> node) {
@@ -16,10 +17,6 @@ public class DoubleNode<T> {
 
   public T getValue() {
     return value;
-  }
-
-  public void setValue(T data) {
-    value = data;
   }
 
   public DoubleNode<T> getNext() {

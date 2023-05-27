@@ -17,10 +17,6 @@ public class Node<T> {
     return value;
   }
 
-  public void setValue(T data) {
-    value = data;
-  }
-
   public Node<T> getNext() {
     return next;
   }
