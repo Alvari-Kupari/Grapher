@@ -226,12 +226,102 @@ public class Graph<T extends Comparable<T>> {
   }
 
   public List<T> recursiveBreadthFirstSearch() {
-    // TODO: Task 3.
-    throw new UnsupportedOperationException();
+    Set<T> discovered = new HashSet<>();
+    ArrayList<T> roots = new ArrayList<T>();
+    ArrayList<T> visited = new ArrayList<T>();
+
+    // get the roots
+    Set<T> rootSet = getRoots();
+    for (T vertex : rootSet) {
+      roots.add(vertex);
+    }
+    // sort the roots
+    Collections.sort(roots);
+
+    for (T root : roots) {
+      bfs(root, visited, discovered);
+    }
+    return visited;
+  }
+
+  public void bfs(T root, ArrayList<T> visited, Set<T> discovered) {
+    // initialise the successors
+    ArrayList<T> successors = new ArrayList<T>();
+
+    if (!discovered.contains(root)) visited.add(root);
+
+    discovered.add(root);
+
+    for (Vertex<T> v : getVertex(root).successors()) {
+      if (!discovered.contains(v.getValue())) {
+        // add the vertex to successors
+        successors.add(v.getValue());
+      }
+    }
+    // sort the successors
+    Collections.sort(successors);
+
+    // update the discovered verticies
+    discovered.addAll(successors);
+
+    // base case
+    if (successors.isEmpty()) return;
+
+    for (T vertex : successors) {
+      // add each successor to visited
+      visited.add(vertex);
+      discovered.add(vertex);
+    }
+
+    for (T vertex : successors) {
+      // recurse the bfs
+      bfs(vertex, visited, discovered);
+    }
   }
 
   public List<T> recursiveDepthFirstSearch() {
-    // TODO: Task 3.
-    throw new UnsupportedOperationException();
+    Set<T> discovered = new HashSet<>();
+    ArrayList<T> roots = new ArrayList<T>();
+    ArrayList<T> visited = new ArrayList<T>();
+
+    // get the roots
+    Set<T> rootSet = getRoots();
+    for (T vertex : rootSet) {
+      roots.add(vertex);
+    }
+    // sort the roots
+    Collections.sort(roots);
+
+    for (T root : roots) {
+      dfs(root, visited, discovered);
+    }
+    return visited;
+  }
+
+  private void dfs(T root, ArrayList<T> visited, Set<T> discovered) {
+    // initialise the successors
+    ArrayList<T> successors = new ArrayList<T>();
+    visited.add(root);
+    discovered.add(root);
+
+    for (Vertex<T> v : getVertex(root).successors()) {
+      if (!discovered.contains(v.getValue())) {
+        // add the vertex to successors
+        successors.add(v.getValue());
+      }
+    }
+    // sort the successors
+    Collections.sort(successors);
+
+    // update the discovered verticies
+    discovered.addAll(successors);
+
+    // base case
+    if (successors.isEmpty()) return;
+
+    for (T vertex : successors) {
+      // recurse the dfs
+      dfs(vertex, visited, discovered);
+    }
   }
 }
