@@ -120,13 +120,109 @@ public class Graph<T extends Comparable<T>> {
   }
 
   public List<T> iterativeBreadthFirstSearch() {
-    // TODO: Task 2.
-    throw new UnsupportedOperationException();
+    // initialise all lists
+    Queue<T> queue = new Queue<>();
+    ArrayList<T> visited = new ArrayList<>();
+    Set<T> discovered = new HashSet<>();
+    ArrayList<T> roots = new ArrayList<T>();
+
+    // get the roots
+    Set<T> rootSet = getRoots();
+    for (T vertex : rootSet) {
+      roots.add(vertex);
+    }
+    // sort the roots
+    Collections.sort(roots);
+
+    // iterate through all roots
+    for (T root : roots) {
+      // queue the root
+      queue.enQueue(root);
+
+      while (!queue.isEmpty()) {
+        T vertex = queue.deQueue();
+
+        // add the vertex
+        visited.add(vertex);
+        discovered.add(vertex);
+
+        // initialise the successors
+        ArrayList<T> successors = new ArrayList<T>();
+
+        for (Vertex<T> v : getVertex(vertex).successors()) {
+          if (!discovered.contains(v.getValue())) {
+            successors.add(v.getValue());
+          }
+        }
+        // reverse the successors list
+        Collections.sort(successors);
+
+        // add thte successors to the discovered list
+        discovered.addAll(successors);
+
+        for (T v1 : successors) {
+          queue.enQueue(v1);
+        }
+      }
+    }
+    return visited;
   }
 
   public List<T> iterativeDepthFirstSearch() {
-    // TODO: Task 2.
-    throw new UnsupportedOperationException();
+    // initialise all lists
+    Stack<T> stack = new Stack<>();
+    ArrayList<T> visited = new ArrayList<>();
+    Set<T> discovered = new HashSet<>();
+    ArrayList<T> roots = new ArrayList<T>();
+
+    // get the roots
+    Set<T> rootSet = getRoots();
+    for (T vertex : rootSet) {
+      roots.add(vertex);
+    }
+    // sort the roots
+    Collections.sort(roots);
+
+    // iterate through all roots
+    for (T root : roots) {
+      stack.push(root);
+
+      while (!stack.isEmpty()) {
+        T vertex = stack.pop();
+
+        // add the vertex
+        visited.add(vertex);
+        discovered.add(vertex);
+
+        // initialise the successors
+        ArrayList<T> successors = new ArrayList<T>();
+
+        for (Vertex<T> v : getVertex(vertex).successors()) {
+          if (!discovered.contains(v.getValue())) {
+            successors.add(v.getValue());
+          }
+        }
+
+        // reverse the successors list
+        Collections.sort(successors);
+        Collections.reverse(successors);
+
+        // add thte successors to the discovered list
+        discovered.addAll(successors);
+
+        for (T v1 : successors) {
+          stack.push(v1);
+        }
+      }
+    }
+    return visited;
+  }
+
+  public Vertex<T> getVertex(T vertex) {
+    for (Vertex<T> v : verticies) {
+      if (v.getValue().equals(vertex)) return v;
+    }
+    return null;
   }
 
   public List<T> recursiveBreadthFirstSearch() {
