@@ -1,5 +1,8 @@
 package nz.ac.auckland.se281.datastructures;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -11,42 +14,109 @@ import java.util.Set;
  * @param <T> The type of each vertex, that have a total ordering.
  */
 public class Graph<T extends Comparable<T>> {
-  public Graph(Set<T> verticies, Set<Edge<T>> edges) {}
+  private ArrayList<Vertex<T>> verticies;
+  private Set<Edge<T>> edges;
+  private ArrayList<T> temp;
+
+  public Graph(Set<T> verticies, Set<Edge<T>> edges) {
+    temp = new ArrayList<>();
+    for (T v : verticies) {
+      temp.add(v);
+    }
+    Collections.sort(temp);
+
+    this.verticies = new ArrayList<Vertex<T>>();
+    this.edges = edges;
+
+    // add each vertex to the arraylist
+    for (T val : temp) {
+      this.verticies.add(new Vertex<T>(val, edges));
+    }
+    // now update all the verticies connections
+    for (Vertex<T> v : this.verticies) {
+      v.update(this.verticies, edges);
+    }
+  }
 
   public Set<T> getRoots() {
-    // TODO: Task 1.
+    Set<T> set = new HashSet<T>();
+    for (Vertex<T> v : verticies) {
+      if (v.getInDegree() == 0) set.add(v.getValue());
+    }
 
-    throw new UnsupportedOperationException();
+    if (isEquivalence()) {
+      for (Vertex<T> v : verticies) {
+        set.add(Collections.min(v.getEquivalenceSet()));
+      }
+    }
+    return set;
   }
 
   public boolean isReflexive() {
-    // TODO: Task 1.
-    throw new UnsupportedOperationException();
+    for (Vertex<T> vertex : verticies) {
+      // iterate through every vertex and make sure it has a self loop
+      if (!vertex.hasSelfLoop()) return false;
+    }
+
+    return true;
   }
 
   public boolean isSymmetric() {
-    // TODO: Task 1.
-    throw new UnsupportedOperationException();
+    // iterate over all possible pairs
+    for (Vertex<T> v : verticies) {
+      for (Vertex<T> v1 : v.successors()) {
+        // check if symmetry holds
+        if (!v1.successors().contains(v)) return false;
+      }
+    }
+
+    return true;
   }
 
   public boolean isTransitive() {
-    // TODO: Task 1.
-    throw new UnsupportedOperationException();
+    // iterate through all possibly transitive edges
+    for (Vertex<T> v : verticies) {
+      for (Vertex<T> v1 : v.successors()) {
+        for (Vertex<T> v2 : v1.successors()) {
+          // if the transitive edge is not located return false
+          if (!v.successors().contains(v2)) return false;
+        }
+      }
+    }
+
+    return true;
   }
 
   public boolean isAntiSymmetric() {
-    // TODO: Task 1.
-    throw new UnsupportedOperationException();
+    // iterate through all possible antisymmetric edges
+    for (Vertex<T> v : verticies) {
+      for (Vertex<T> v1 : v.successors()) {
+        if (v1.successors().contains(v) && (v != v1)) return false;
+      }
+    }
+    return true;
   }
 
   public boolean isEquivalence() {
-    // TODO: Task 1.
-    throw new UnsupportedOperationException();
+
+    if (isSymmetric() && isReflexive() && isTransitive()) {
+      return true;
+    }
+    return false;
   }
 
   public Set<T> getEquivalenceClass(T vertex) {
-    // TODO: Task 1.
-    throw new UnsupportedOperationException();
+    Set<T> set = new HashSet<T>();
+
+    // first check if its an equivalence relation
+    if (!isEquivalence()) return set;
+
+    for (Edge<T> edge : edges) {
+      if (edge.getSource().equals(vertex)) {
+        set.add(edge.getDestination());
+      }
+    }
+    return set;
   }
 
   public List<T> iterativeBreadthFirstSearch() {
