@@ -43,7 +43,9 @@ public class Graph<T extends Comparable<T>> {
 
     for (Vertex<T> v : verticies) {
       // always add the in degree 0 roots
-      if (v.getInDegree() == 0) set.add(v.getValue());
+      if (v.getInDegree() == 0) {
+        set.add(v.getValue());
+      }
     }
 
     if (isEquivalence()) {
@@ -70,7 +72,9 @@ public class Graph<T extends Comparable<T>> {
   public boolean isReflexive() {
     for (Vertex<T> vertex : verticies) {
       // iterate through every vertex and make sure it has a self loop
-      if (!vertex.hasSelfLoop()) return false;
+      if (!vertex.hasSelfLoop()) {
+        return false;
+      }
     }
 
     return true;
@@ -84,9 +88,11 @@ public class Graph<T extends Comparable<T>> {
   public boolean isSymmetric() {
     // iterate over all possible pairs
     for (Vertex<T> v : verticies) {
-      for (Vertex<T> v1 : v.successors()) {
+      for (Vertex<T> v1 : v.getSuccessors()) {
         // check if symmetry holds
-        if (!v1.successors().contains(v)) return false;
+        if (!v1.getSuccessors().contains(v)) {
+          return false;
+        }
       }
     }
 
@@ -101,10 +107,12 @@ public class Graph<T extends Comparable<T>> {
   public boolean isTransitive() {
     // iterate through all possibly transitive edges
     for (Vertex<T> v : verticies) {
-      for (Vertex<T> v1 : v.successors()) {
-        for (Vertex<T> v2 : v1.successors()) {
+      for (Vertex<T> v1 : v.getSuccessors()) {
+        for (Vertex<T> v2 : v1.getSuccessors()) {
           // if the transitive edge is not located return false
-          if (!v.successors().contains(v2)) return false;
+          if (!v.getSuccessors().contains(v2)) {
+            return false;
+          }
         }
       }
     }
@@ -120,8 +128,10 @@ public class Graph<T extends Comparable<T>> {
   public boolean isAntiSymmetric() {
     // iterate through all possible antisymmetric edges
     for (Vertex<T> v : verticies) {
-      for (Vertex<T> v1 : v.successors()) {
-        if (v1.successors().contains(v) && (v != v1)) return false;
+      for (Vertex<T> v1 : v.getSuccessors()) {
+        if (v1.getSuccessors().contains(v) && (v != v1)) {
+          return false;
+        }
       }
     }
     return true;
@@ -151,7 +161,9 @@ public class Graph<T extends Comparable<T>> {
     Set<T> set = new HashSet<T>();
 
     // first check if its an equivalence relation
-    if (!isEquivalence()) return set;
+    if (!isEquivalence()) {
+      return set;
+    }
 
     // iterate through all edges
     for (Edge<T> edge : edges) {
@@ -197,7 +209,7 @@ public class Graph<T extends Comparable<T>> {
         // initialise the successors
         ArrayList<Integer> successors = new ArrayList<Integer>();
 
-        for (Vertex<T> v : getVertex(vertex).successors()) {
+        for (Vertex<T> v : getVertex(vertex).getSuccessors()) {
           if (!discovered.contains(Integer.parseInt((String) v.getValue()))) {
             successors.add(Integer.parseInt((String) v.getValue()));
           }
@@ -251,7 +263,7 @@ public class Graph<T extends Comparable<T>> {
         // initialise the successors
         ArrayList<Integer> successors = new ArrayList<Integer>();
 
-        for (Vertex<T> v : getVertex(vertex).successors()) {
+        for (Vertex<T> v : getVertex(vertex).getSuccessors()) {
           if (!discovered.contains(Integer.parseInt((String) v.getValue()))) {
             successors.add(Integer.parseInt((String) v.getValue()));
           }
@@ -283,7 +295,9 @@ public class Graph<T extends Comparable<T>> {
 
     for (Vertex<T> v : verticies) {
       // return the vertex if it matched
-      if (vertex == Integer.parseInt((String) v.getValue())) return v;
+      if (vertex == Integer.parseInt((String) v.getValue())) {
+        return v;
+      }
     }
     return null;
   }
@@ -298,7 +312,9 @@ public class Graph<T extends Comparable<T>> {
 
     for (Vertex<T> v : verticies) {
       // return the vertex if it matched
-      if (value == v.getValue()) return v;
+      if (value == v.getValue()) {
+        return v;
+      }
     }
     return null;
   }
@@ -342,10 +358,12 @@ public class Graph<T extends Comparable<T>> {
     ArrayList<Integer> successors = new ArrayList<>();
 
     // que the root
-    if (!discovered.contains(root)) queue.enQueue(root);
+    if (!discovered.contains(root)) {
+      queue.enQueue(root);
+    }
     discovered.add(root);
 
-    for (Vertex<T> v : getVertex(root).successors()) {
+    for (Vertex<T> v : getVertex(root).getSuccessors()) {
       if (!discovered.contains(Integer.parseInt((String) v.getValue()))) {
         // add the vertex to successors
         successors.add(Integer.parseInt((String) v.getValue()));
@@ -365,7 +383,9 @@ public class Graph<T extends Comparable<T>> {
     visited.add(getVertex(queue.deQueue()).getValue());
 
     // base case
-    if (queue.isEmpty()) return;
+    if (queue.isEmpty()) {
+      return;
+    }
 
     // recurse
     bfs(queue.peek(), visited, discovered, queue);
@@ -409,7 +429,7 @@ public class Graph<T extends Comparable<T>> {
     visited.add(getVertex(root).getValue());
     discovered.add(root);
 
-    for (Vertex<T> v : getVertex(root).successors()) {
+    for (Vertex<T> v : getVertex(root).getSuccessors()) {
       if (!discovered.contains(Integer.parseInt((String) v.getValue()))) {
         // add the vertex to successors
         successors.add(Integer.parseInt((String) v.getValue()));
@@ -422,7 +442,9 @@ public class Graph<T extends Comparable<T>> {
     discovered.addAll(successors);
 
     // base case
-    if (successors.isEmpty()) return;
+    if (successors.isEmpty()) {
+      return;
+    }
 
     for (int vertex : successors) {
       // recurse the dfs

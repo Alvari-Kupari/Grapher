@@ -19,11 +19,17 @@ public class Vertex<T> {
 
     for (Edge<T> edge : edges) {
       // check for self loop
-      if (val == edge.getDestination() && val == edge.getSource()) hasSelfLoop = true;
+      if (val == edge.getDestination() && val == edge.getSource()) {
+        hasSelfLoop = true;
+      }
 
       // count the in degree and out degree
-      if (val == edge.getDestination()) inDegree++;
-      if (val == edge.getSource()) outDegree++;
+      if (val == edge.getDestination()) {
+        inDegree++;
+      }
+      if (val == edge.getSource()) {
+        outDegree++;
+      }
     }
   }
 
@@ -37,7 +43,9 @@ public class Vertex<T> {
   public boolean pointsTo(Vertex<T> v, Set<Edge<T>> edges) {
     for (Edge<T> edge : edges) {
       // check if the vertex points to v
-      if (val == edge.getSource() && v.getValue() == edge.getDestination()) return true;
+      if (val == edge.getSource() && v.getValue() == edge.getDestination()) {
+        return true;
+      }
     }
     return false;
   }
@@ -47,7 +55,7 @@ public class Vertex<T> {
    *
    * @return a set of vertices that are pointed to by this
    */
-  public Set<Vertex<T>> successors() {
+  public Set<Vertex<T>> getSuccessors() {
     return successors;
   }
 
