@@ -16,20 +16,14 @@ import java.util.Set;
 public class Graph<T extends Comparable<T>> {
   private ArrayList<Vertex<T>> verticies;
   private Set<Edge<T>> edges;
-  private ArrayList<T> temp;
 
   public Graph(Set<T> verticies, Set<Edge<T>> edges) {
-    temp = new ArrayList<>();
-    for (T v : verticies) {
-      temp.add(v);
-    }
-    Collections.sort(temp);
 
     this.verticies = new ArrayList<Vertex<T>>();
     this.edges = edges;
 
     // add each vertex to the arraylist
-    for (T val : temp) {
+    for (T val : verticies) {
       this.verticies.add(new Vertex<T>(val, edges));
     }
     // now update all the verticies connections
@@ -38,20 +32,41 @@ public class Graph<T extends Comparable<T>> {
     }
   }
 
+  /**
+   * returns a set of verticies which are the roots of the graph
+   *
+   * @return set of roots of the graph
+   */
   public Set<T> getRoots() {
+    // initialise a set
     Set<T> set = new HashSet<T>();
+
     for (Vertex<T> v : verticies) {
+      // always add the in degree 0 roots
       if (v.getInDegree() == 0) set.add(v.getValue());
     }
 
     if (isEquivalence()) {
+      // if equivalence relation we can add self loops
       for (Vertex<T> v : verticies) {
-        set.add(Collections.min(v.getEquivalenceSet()));
+        Set<Integer> tempSet = new HashSet<>();
+
+        // convert the equivalence set to integers
+        for (T t : v.getEquivalenceSet()) {
+          tempSet.add(Integer.parseInt((String) getVertex(t).getValue()));
+        }
+        // add the minimum
+        set.add(getVertex(Collections.min(tempSet)).getValue());
       }
     }
     return set;
   }
 
+  /**
+   * determines whether a graph is reflexive
+   *
+   * @return a boolean indicating if the graph is reflexive or not
+   */
   public boolean isReflexive() {
     for (Vertex<T> vertex : verticies) {
       // iterate through every vertex and make sure it has a self loop
@@ -61,6 +76,11 @@ public class Graph<T extends Comparable<T>> {
     return true;
   }
 
+  /**
+   * determines whether the graph is symmetric
+   *
+   * @return boolean indicating whether graph is symmetric
+   */
   public boolean isSymmetric() {
     // iterate over all possible pairs
     for (Vertex<T> v : verticies) {
@@ -73,6 +93,11 @@ public class Graph<T extends Comparable<T>> {
     return true;
   }
 
+  /**
+   * determines whether the graph is transitive
+   *
+   * @return boolean indicating twhether the graph is trnasitive
+   */
   public boolean isTransitive() {
     // iterate through all possibly transitive edges
     for (Vertex<T> v : verticies) {
@@ -87,6 +112,11 @@ public class Graph<T extends Comparable<T>> {
     return true;
   }
 
+  /**
+   * determines whether a graph is antisymmetric
+   *
+   * @return boolean indicating whether the graph is antisymmetric
+   */
   public boolean isAntiSymmetric() {
     // iterate through all possible antisymmetric edges
     for (Vertex<T> v : verticies) {
@@ -97,20 +127,33 @@ public class Graph<T extends Comparable<T>> {
     return true;
   }
 
+  /**
+   * determines whether the lkoaded graph is an equivalence relation
+   *
+   * @return a boolean indicating whether the graph is an equivalence relation
+   */
   public boolean isEquivalence() {
 
+    // return true if all three properties below are satisfied
     if (isSymmetric() && isReflexive() && isTransitive()) {
       return true;
     }
     return false;
   }
 
+  /**
+   * calculates and returns the equivalence class of a given vertex
+   *
+   * @param vertex a vertex of the graph
+   * @return a the set of vertices which are the equivalence class of the input
+   */
   public Set<T> getEquivalenceClass(T vertex) {
     Set<T> set = new HashSet<T>();
 
     // first check if its an equivalence relation
     if (!isEquivalence()) return set;
 
+    // iterate through all edges
     for (Edge<T> edge : edges) {
       if (edge.getSource().equals(vertex)) {
         set.add(edge.getDestination());
@@ -119,48 +162,54 @@ public class Graph<T extends Comparable<T>> {
     return set;
   }
 
+  /**
+   * performs a breadth first search of the graph using and iterative approach.
+   *
+   * @return a list of the vertices searched in order
+   */
   public List<T> iterativeBreadthFirstSearch() {
     // initialise all lists
-    Queue<T> queue = new Queue<>();
-    ArrayList<T> visited = new ArrayList<>();
-    Set<T> discovered = new HashSet<>();
-    ArrayList<T> roots = new ArrayList<T>();
+    Queue<Integer> queue = new Queue<>();
+    ArrayList<T> visited = new ArrayList<T>();
+    Set<Integer> discovered = new HashSet<>();
+    ArrayList<Integer> roots = new ArrayList<Integer>();
 
     // get the roots
     Set<T> rootSet = getRoots();
     for (T vertex : rootSet) {
-      roots.add(vertex);
+      roots.add(Integer.parseInt((String) vertex));
     }
     // sort the roots
     Collections.sort(roots);
 
     // iterate through all roots
-    for (T root : roots) {
+    for (int root : roots) {
       // queue the root
       queue.enQueue(root);
 
       while (!queue.isEmpty()) {
-        T vertex = queue.deQueue();
+        int vertex = queue.deQueue();
 
         // add the vertex
-        visited.add(vertex);
+        visited.add(getVertex(vertex).getValue());
         discovered.add(vertex);
 
         // initialise the successors
-        ArrayList<T> successors = new ArrayList<T>();
+        ArrayList<Integer> successors = new ArrayList<Integer>();
 
         for (Vertex<T> v : getVertex(vertex).successors()) {
-          if (!discovered.contains(v.getValue())) {
-            successors.add(v.getValue());
+          if (!discovered.contains(Integer.parseInt((String) v.getValue()))) {
+            successors.add(Integer.parseInt((String) v.getValue()));
           }
         }
-        // reverse the successors list
+        // sort the successors list
         Collections.sort(successors);
 
         // add thte successors to the discovered list
         discovered.addAll(successors);
 
-        for (T v1 : successors) {
+        // que all successors
+        for (int v1 : successors) {
           queue.enQueue(v1);
         }
       }
@@ -168,38 +217,43 @@ public class Graph<T extends Comparable<T>> {
     return visited;
   }
 
+  /**
+   * performs a depth first search of the graph
+   *
+   * @return a list of the vertices searched in order
+   */
   public List<T> iterativeDepthFirstSearch() {
     // initialise all lists
-    Stack<T> stack = new Stack<>();
+    Stack<Integer> stack = new Stack<>();
     ArrayList<T> visited = new ArrayList<>();
-    Set<T> discovered = new HashSet<>();
-    ArrayList<T> roots = new ArrayList<T>();
+    Set<Integer> discovered = new HashSet<>();
+    ArrayList<Integer> roots = new ArrayList<Integer>();
 
     // get the roots
     Set<T> rootSet = getRoots();
     for (T vertex : rootSet) {
-      roots.add(vertex);
+      roots.add(Integer.parseInt((String) vertex));
     }
     // sort the roots
     Collections.sort(roots);
 
     // iterate through all roots
-    for (T root : roots) {
+    for (int root : roots) {
       stack.push(root);
 
       while (!stack.isEmpty()) {
-        T vertex = stack.pop();
+        int vertex = stack.pop();
 
         // add the vertex
-        visited.add(vertex);
+        visited.add(getVertex(vertex).getValue());
         discovered.add(vertex);
 
         // initialise the successors
-        ArrayList<T> successors = new ArrayList<T>();
+        ArrayList<Integer> successors = new ArrayList<Integer>();
 
         for (Vertex<T> v : getVertex(vertex).successors()) {
-          if (!discovered.contains(v.getValue())) {
-            successors.add(v.getValue());
+          if (!discovered.contains(Integer.parseInt((String) v.getValue()))) {
+            successors.add(Integer.parseInt((String) v.getValue()));
           }
         }
 
@@ -210,7 +264,8 @@ public class Graph<T extends Comparable<T>> {
         // add thte successors to the discovered list
         discovered.addAll(successors);
 
-        for (T v1 : successors) {
+        // push all vertices to the stack
+        for (int v1 : successors) {
           stack.push(v1);
         }
       }
@@ -218,44 +273,82 @@ public class Graph<T extends Comparable<T>> {
     return visited;
   }
 
-  public Vertex<T> getVertex(T vertex) {
+  /**
+   * searches and returns a vertex given an integer (the value of the vertex)
+   *
+   * @param vertex the integer value of the verticies
+   * @return a vertex, the one matching the value of the input
+   */
+  public Vertex<T> getVertex(int vertex) {
+
     for (Vertex<T> v : verticies) {
-      if (v.getValue().equals(vertex)) return v;
+      // return the vertex if it matched
+      if (vertex == Integer.parseInt((String) v.getValue())) return v;
     }
     return null;
   }
 
+  /**
+   * returns a vertrx based on the value of the vertex
+   *
+   * @param value the value of the given vertex
+   * @return the vertex the value came from
+   */
+  public Vertex<T> getVertex(T value) {
+
+    for (Vertex<T> v : verticies) {
+      // return the vertex if it matched
+      if (value == v.getValue()) return v;
+    }
+    return null;
+  }
+
+  /**
+   * performs a breadth first search of the graph recursively
+   *
+   * @return a list of the vertices searched in order
+   */
   public List<T> recursiveBreadthFirstSearch() {
-    Set<T> discovered = new HashSet<>();
-    ArrayList<T> roots = new ArrayList<T>();
+    // initialise all lists
+    Set<Integer> discovered = new HashSet<>();
+    ArrayList<Integer> roots = new ArrayList<Integer>();
     ArrayList<T> visited = new ArrayList<T>();
+    Queue<Integer> queue = new Queue<>();
 
     // get the roots
     Set<T> rootSet = getRoots();
     for (T vertex : rootSet) {
-      roots.add(vertex);
+      roots.add(Integer.parseInt((String) vertex));
     }
     // sort the roots
     Collections.sort(roots);
 
-    for (T root : roots) {
-      bfs(root, visited, discovered);
+    for (int root : roots) {
+      bfs(root, visited, discovered, queue);
     }
     return visited;
   }
 
-  public void bfs(T root, ArrayList<T> visited, Set<T> discovered) {
+  /**
+   * a helper function which performs a recursive bread first search of one root
+   *
+   * @param root the root to be searched
+   * @param visited a list of vertices already visited
+   * @param discovered a list of vertices already discovered
+   * @param queue a queue containing the vertices that have been discovered
+   */
+  public void bfs(int root, ArrayList<T> visited, Set<Integer> discovered, Queue<Integer> queue) {
     // initialise the successors
-    ArrayList<T> successors = new ArrayList<T>();
+    ArrayList<Integer> successors = new ArrayList<>();
 
-    if (!discovered.contains(root)) visited.add(root);
-
+    // que the root
+    if (!discovered.contains(root)) queue.enQueue(root);
     discovered.add(root);
 
     for (Vertex<T> v : getVertex(root).successors()) {
-      if (!discovered.contains(v.getValue())) {
+      if (!discovered.contains(Integer.parseInt((String) v.getValue()))) {
         // add the vertex to successors
-        successors.add(v.getValue());
+        successors.add(Integer.parseInt((String) v.getValue()));
       }
     }
     // sort the successors
@@ -264,50 +357,62 @@ public class Graph<T extends Comparable<T>> {
     // update the discovered verticies
     discovered.addAll(successors);
 
+    for (int v : successors) {
+      // que all successors
+      queue.enQueue(v);
+    }
+    // now deque the que
+    visited.add(getVertex(queue.deQueue()).getValue());
+
     // base case
-    if (successors.isEmpty()) return;
+    if (queue.isEmpty()) return;
 
-    for (T vertex : successors) {
-      // add each successor to visited
-      visited.add(vertex);
-      discovered.add(vertex);
-    }
-
-    for (T vertex : successors) {
-      // recurse the bfs
-      bfs(vertex, visited, discovered);
-    }
+    // recurse
+    bfs(queue.peek(), visited, discovered, queue);
   }
 
+  /**
+   * perfornms a depth first search of the graph recursively
+   *
+   * @return a list containig the vertices searched in order
+   */
   public List<T> recursiveDepthFirstSearch() {
-    Set<T> discovered = new HashSet<>();
-    ArrayList<T> roots = new ArrayList<T>();
+    // initialise all lists
+    Set<Integer> discovered = new HashSet<>();
+    ArrayList<Integer> roots = new ArrayList<>();
     ArrayList<T> visited = new ArrayList<T>();
 
     // get the roots
     Set<T> rootSet = getRoots();
     for (T vertex : rootSet) {
-      roots.add(vertex);
+      roots.add(Integer.parseInt((String) vertex));
     }
     // sort the roots
     Collections.sort(roots);
 
-    for (T root : roots) {
+    for (int root : roots) {
       dfs(root, visited, discovered);
     }
     return visited;
   }
 
-  private void dfs(T root, ArrayList<T> visited, Set<T> discovered) {
+  /**
+   * a helper function which performs a depth first search recursively for one root vertex
+   *
+   * @param root the root to be searched
+   * @param visited a list of already visited vertices
+   * @param discovered a list of already discovered vertices
+   */
+  private void dfs(int root, ArrayList<T> visited, Set<Integer> discovered) {
     // initialise the successors
-    ArrayList<T> successors = new ArrayList<T>();
-    visited.add(root);
+    ArrayList<Integer> successors = new ArrayList<>();
+    visited.add(getVertex(root).getValue());
     discovered.add(root);
 
     for (Vertex<T> v : getVertex(root).successors()) {
-      if (!discovered.contains(v.getValue())) {
+      if (!discovered.contains(Integer.parseInt((String) v.getValue()))) {
         // add the vertex to successors
-        successors.add(v.getValue());
+        successors.add(Integer.parseInt((String) v.getValue()));
       }
     }
     // sort the successors
@@ -319,9 +424,26 @@ public class Graph<T extends Comparable<T>> {
     // base case
     if (successors.isEmpty()) return;
 
-    for (T vertex : successors) {
+    for (int vertex : successors) {
       // recurse the dfs
       dfs(vertex, visited, discovered);
     }
+  }
+
+  /**
+   * a helper function which converts a list of type T into a list of integers
+   *
+   * @param list a list to be converted to T tpye
+   * @return a list of integers
+   */
+  public List<Integer> sort(List<T> list) {
+    // create new list
+    List<Integer> intList = new ArrayList<Integer>();
+
+    // iterate through and convert to int
+    for (T data : list) {
+      intList.add(Integer.parseInt((String) data));
+    }
+    return intList;
   }
 }

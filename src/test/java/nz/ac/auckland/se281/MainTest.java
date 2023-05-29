@@ -12,7 +12,7 @@ import org.junit.runners.Suite.SuiteClasses;
   MainTest.Task1.class,
   MainTest.Task2.class, // Uncomment this line when you start Task 2
   MainTest.Task3.class, // Uncomment this line when you start Task 3
-  // MainTest.YourTests.class, // Uncomment this line to run your own tests
+  MainTest.YourTests.class, // Uncomment this line to run your own tests
 })
 public class MainTest {
   public static class Task1 extends CliTest {
@@ -270,8 +270,27 @@ public class MainTest {
     }
 
     @Test
-    public void TY_01_your_own_test() throws Exception {
-      // Write your own test here, in the same format as the other tests.
+    public void TY_04_e_rdfs() throws Exception {
+      runCommands(OPEN_FILE, "e.txt", GRAPH_SEARCH_RDFS);
+      assertContains("[1, 2, 4, 5, 3, 6]");
+    }
+
+    @Test
+    public void TY_04_e_idfs() throws Exception {
+      runCommands(OPEN_FILE, "e.txt", GRAPH_SEARCH_IDFS);
+      assertContains("[1, 2, 4, 5, 3, 6]");
+    }
+
+    @Test
+    public void TY_04_e_rbfs() throws Exception {
+      runCommands(OPEN_FILE, "e.txt", GRAPH_SEARCH_RBFS);
+      assertContains("[1, 2, 3, 4, 5, 6]");
+    }
+
+    @Test
+    public void TY_04_e_ibfs() throws Exception {
+      runCommands(OPEN_FILE, "e.txt", GRAPH_SEARCH_IBFS);
+      assertContains("[1, 2, 3, 4, 5, 6]");
     }
   }
 }
