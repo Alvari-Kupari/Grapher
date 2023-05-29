@@ -16,27 +16,27 @@ public class Node<T> {
   }
 
   /**
-   * a setter function which sets the next node
+   * a setter function which sets the next node.
    *
-   * @param node the node to be set as next in sequence
+   * @param node the node to be set as next in sequence.
    */
   public void setNext(Node<T> node) {
     this.next = node;
   }
 
   /**
-   * a getter function which returns the vlaue of the node
+   * a getter function which returns the vlaue of the node.
    *
-   * @return the value of the node
+   * @return the value of the node.
    */
   public T getValue() {
     return value;
   }
 
   /**
-   * a getter which returns the next node
+   * a getter which returns the next node.
    *
-   * @return the next node
+   * @return the next node.
    */
   public Node<T> getNext() {
     return next;

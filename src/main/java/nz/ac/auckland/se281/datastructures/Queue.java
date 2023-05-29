@@ -10,9 +10,9 @@ public class Queue<T> {
   }
 
   /**
-   * places a value of the back of the que
+   * places a value of the back of the que.
    *
-   * @param data the value to be put into the back of the que
+   * @param data the value to be put into the back of the que.
    */
   public void enQueue(T data) {
     DoubleNode<T> node = new DoubleNode<T>(data);
@@ -31,9 +31,9 @@ public class Queue<T> {
   }
 
   /**
-   * removes the first in line in que and returns it
+   * removes the first in line in que and returns it.
    *
-   * @return the first in line in the que
+   * @return the first in line in the que.
    */
   public T deQueue() {
     // check if empty
@@ -46,9 +46,9 @@ public class Queue<T> {
   }
 
   /**
-   * finds the top of the que
+   * finds the top of the que.
    *
-   * @return the first value in the que
+   * @return the first value in the que.
    */
   public T peek() {
 
@@ -56,9 +56,9 @@ public class Queue<T> {
   }
 
   /**
-   * finds the size of the que
+   * finds the size of the que.
    *
-   * @return integer indicating the size of the que
+   * @return integer indicating the size of the que.
    */
   public int size() {
     DoubleNode<T> node = first;
@@ -75,9 +75,9 @@ public class Queue<T> {
   }
 
   /**
-   * determines whether the que is empty
+   * determines whether the que is empty.
    *
-   * @return boolean indicating if the que is empty
+   * @return boolean indicating if the que is empty.
    */
   public boolean isEmpty() {
     return first == null;

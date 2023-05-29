@@ -8,9 +8,9 @@ public class Stack<T> {
   }
 
   /**
-   * inserts a data value to the top of the stack
+   * inserts a data value to the top of the stack.
    *
-   * @param data the data to be pushed to the top
+   * @param data the data to be pushed to the top.
    */
   public void push(T data) {
     Node<T> node = new Node<T>(data);
@@ -22,9 +22,9 @@ public class Stack<T> {
   }
 
   /**
-   * returns the value at the top of the stack
+   * returns the value at the top of the stack.
    *
-   * @return the top of the stack
+   * @return the top of the stack.
    */
   public T peek() {
 
@@ -32,9 +32,9 @@ public class Stack<T> {
   }
 
   /**
-   * removes the top of the stack and returns it
+   * removes the top of the stack and returns it.
    *
-   * @return the top of the stack
+   * @return the top of the stack.
    */
   public T pop() {
     // check if empty
@@ -48,9 +48,9 @@ public class Stack<T> {
   }
 
   /**
-   * finds the value of the stack
+   * finds the value of the stack.
    *
-   * @return the size of the stack
+   * @return the size of the stack.
    */
   public int size() {
     int size = 0;
@@ -65,9 +65,9 @@ public class Stack<T> {
   }
 
   /**
-   * determines whether the stack is empty
+   * determines whether the stack is empty.
    *
-   * @return boolean indicating if the stack is empty
+   * @return boolean indicating if the stack is empty.
    */
   public boolean isEmpty() {
     return head == null;

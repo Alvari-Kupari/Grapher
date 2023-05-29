@@ -11,6 +11,13 @@ public class Vertex<T> {
   private boolean hasSelfLoop;
   private Set<Vertex<T>> successors;
 
+  /**
+   * a constructor for a vertex involves the value of the vertex and also knowing all the adjacnet
+   * verticies.
+   *
+   * @param value the value of the vertex.
+   * @param edges the set of edges that could link to this vertex.
+   */
   public Vertex(T value, Set<Edge<T>> edges) {
     this.val = value;
     inDegree = 0;
@@ -34,11 +41,11 @@ public class Vertex<T> {
   }
 
   /**
-   * determines whether a vertex points to a given input vertex
+   * determines whether a vertex points to a given input vertex.
    *
-   * @param v the edge that this vertex might point to
-   * @param edges the set of edges in teh graph
-   * @return a boolean indicating whether this vertex points to v
+   * @param v the edge that this vertex might point to.
+   * @param edges the set of edges in teh graph.
+   * @return a boolean indicating whether this vertex points to v.
    */
   public boolean pointsTo(Vertex<T> v, Set<Edge<T>> edges) {
     for (Edge<T> edge : edges) {
@@ -51,45 +58,45 @@ public class Vertex<T> {
   }
 
   /**
-   * returns a set of vertices which this vertex points to
+   * returns a set of vertices which this vertex points to.
    *
-   * @return a set of vertices that are pointed to by this
+   * @return a set of vertices that are pointed to by this.
    */
   public Set<Vertex<T>> getSuccessors() {
     return successors;
   }
 
   /**
-   * getter which returns the value of this vertex
+   * getter which returns the value of this vertex.
    *
-   * @return the value of this vertex
+   * @return the value of this vertex.
    */
   public T getValue() {
     return val;
   }
 
   /**
-   * returns the in degree of this vertex IE number of incoming edges
+   * returns the in degree of this vertex IE number of incoming edges.
    *
-   * @return the in degree of this vertex
+   * @return the in degree of this vertex.
    */
   public int getInDegree() {
     return inDegree;
   }
 
   /**
-   * returns an integer which is the out degree of this vertex IE number of outgoing edges
+   * returns an integer which is the out degree of this vertex IE number of outgoing edges.
    *
-   * @return the out degree of this veertex
+   * @return the out degree of this veertex.
    */
   public int getOutDegree() {
     return outDegree;
   }
 
   /**
-   * indicates whether this vertex has a self loop
+   * indicates whether this vertex has a self loop.
    *
-   * @return a boolean indiating if this vertex has a self loop
+   * @return a boolean indiating if this vertex has a self loop.
    */
   public boolean hasSelfLoop() {
     return hasSelfLoop;
@@ -97,10 +104,10 @@ public class Vertex<T> {
 
   /**
    * this method is used when loading the graph, to determine which other vertices in the graph this
-   * vertrx points to
+   * vertrx points to.
    *
-   * @param verticies the set of all other vertices in the graph
-   * @param edges the edges of the graph
+   * @param verticies the set of all other vertices in the graph.
+   * @param edges the edges of the graph.
    */
   public void update(ArrayList<Vertex<T>> verticies, Set<Edge<T>> edges) {
     // iterate through all veritcies and add the successors
@@ -112,9 +119,9 @@ public class Vertex<T> {
   }
 
   /**
-   * finds the set of all vertices this vertex points to
+   * finds the set of all vertices this vertex points to.
    *
-   * @return a set containing all successors of this vertex including itself
+   * @return a set containing all successors of this vertex including itself.
    */
   public Set<T> getEquivalenceSet() {
     Set<T> set = new HashSet<T>();

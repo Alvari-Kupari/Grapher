@@ -5,6 +5,11 @@ public class DoubleNode<T> {
   private DoubleNode<T> next;
   private T value;
 
+  /**
+   * a doublenode consists of a value and 2 pointers.
+   *
+   * @param data the value of the node.
+   */
   public DoubleNode(T data) {
     this.next = null;
     this.previous = null;
@@ -12,45 +17,45 @@ public class DoubleNode<T> {
   }
 
   /**
-   * sets the next value in the node
+   * sets the next value in the node.
    *
-   * @param node the node to be set as next
+   * @param node the node to be set as next.
    */
   public void setNext(DoubleNode<T> node) {
     this.next = node;
   }
 
   /**
-   * getter which returns the value of this node
+   * getter which returns the value of this node.
    *
-   * @return the value of this node
+   * @return the value of this node.
    */
   public T getValue() {
     return value;
   }
 
   /**
-   * getter which returns the next node
+   * getter which returns the next node.
    *
-   * @return the next node
+   * @return the next node.
    */
   public DoubleNode<T> getNext() {
     return next;
   }
 
   /**
-   * getter which returns the previous node
+   * getter which returns the previous node.
    *
-   * @return the previous node
+   * @return the previous node.
    */
   public DoubleNode<T> getPrevious() {
     return previous;
   }
 
   /**
-   * setter which sets the previous node
+   * setter which sets the previous node.
    *
-   * @param node node to be set as pervious
+   * @param node node to be set as pervious.
    */
   public void setPrevious(DoubleNode<T> node) {
     previous = node;
