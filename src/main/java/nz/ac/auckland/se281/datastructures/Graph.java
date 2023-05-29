@@ -17,6 +17,12 @@ public class Graph<T extends Comparable<T>> {
   private ArrayList<Vertex<T>> verticies;
   private Set<Edge<T>> edges;
 
+  /**
+   * a constructor for a graph. This creates all vertices and updates them with all relevant edges.
+   *
+   * @param verticies a set of verticies.
+   * @param edges a set of edges.
+   */
   public Graph(Set<T> verticies, Set<Edge<T>> edges) {
 
     this.verticies = new ArrayList<Vertex<T>>();
@@ -33,9 +39,9 @@ public class Graph<T extends Comparable<T>> {
   }
 
   /**
-   * returns a set of verticies which are the roots of the graph
+   * returns a set of verticies which are the roots of the graph.
    *
-   * @return set of roots of the graph
+   * @return set of roots of the graph.
    */
   public Set<T> getRoots() {
     // initialise a set
@@ -65,9 +71,9 @@ public class Graph<T extends Comparable<T>> {
   }
 
   /**
-   * determines whether a graph is reflexive
+   * determines whether a graph is reflexive.
    *
-   * @return a boolean indicating if the graph is reflexive or not
+   * @return a boolean indicating if the graph is reflexive or not.
    */
   public boolean isReflexive() {
     for (Vertex<T> vertex : verticies) {
@@ -81,9 +87,9 @@ public class Graph<T extends Comparable<T>> {
   }
 
   /**
-   * determines whether the graph is symmetric
+   * determines whether the graph is symmetric.
    *
-   * @return boolean indicating whether graph is symmetric
+   * @return boolean indicating whether graph is symmetric.
    */
   public boolean isSymmetric() {
     // iterate over all possible pairs
@@ -100,9 +106,9 @@ public class Graph<T extends Comparable<T>> {
   }
 
   /**
-   * determines whether the graph is transitive
+   * determines whether the graph is transitive.
    *
-   * @return boolean indicating twhether the graph is trnasitive
+   * @return boolean indicating twhether the graph is trnasitive.
    */
   public boolean isTransitive() {
     // iterate through all possibly transitive edges
@@ -121,9 +127,9 @@ public class Graph<T extends Comparable<T>> {
   }
 
   /**
-   * determines whether a graph is antisymmetric
+   * determines whether a graph is antisymmetric.
    *
-   * @return boolean indicating whether the graph is antisymmetric
+   * @return boolean indicating whether the graph is antisymmetric.
    */
   public boolean isAntiSymmetric() {
     // iterate through all possible antisymmetric edges
@@ -138,9 +144,9 @@ public class Graph<T extends Comparable<T>> {
   }
 
   /**
-   * determines whether the lkoaded graph is an equivalence relation
+   * determines whether the lkoaded graph is an equivalence relation.
    *
-   * @return a boolean indicating whether the graph is an equivalence relation
+   * @return a boolean indicating whether the graph is an equivalence relation.
    */
   public boolean isEquivalence() {
 
@@ -152,10 +158,10 @@ public class Graph<T extends Comparable<T>> {
   }
 
   /**
-   * calculates and returns the equivalence class of a given vertex
+   * calculates and returns the equivalence class of a given vertex.
    *
-   * @param vertex a vertex of the graph
-   * @return a the set of vertices which are the equivalence class of the input
+   * @param vertex a vertex of the graph.
+   * @return a the set of vertices which are the equivalence class of the input.
    */
   public Set<T> getEquivalenceClass(T vertex) {
     Set<T> set = new HashSet<T>();
@@ -177,7 +183,7 @@ public class Graph<T extends Comparable<T>> {
   /**
    * performs a breadth first search of the graph using and iterative approach.
    *
-   * @return a list of the vertices searched in order
+   * @return a list of the vertices searched in order.
    */
   public List<T> iterativeBreadthFirstSearch() {
     // initialise all lists
@@ -202,20 +208,7 @@ public class Graph<T extends Comparable<T>> {
       while (!queue.isEmpty()) {
         int vertex = queue.deQueue();
 
-        // add the vertex
-        visited.add(getVertex(vertex).getValue());
-        discovered.add(vertex);
-
-        // initialise the successors
-        ArrayList<Integer> successors = new ArrayList<Integer>();
-
-        for (Vertex<T> v : getVertex(vertex).getSuccessors()) {
-          if (!discovered.contains(Integer.parseInt((String) v.getValue()))) {
-            successors.add(Integer.parseInt((String) v.getValue()));
-          }
-        }
-        // sort the successors list
-        Collections.sort(successors);
+        ArrayList<Integer> successors = sort(visited, discovered, vertex);
 
         // add thte successors to the discovered list
         discovered.addAll(successors);
@@ -230,7 +223,7 @@ public class Graph<T extends Comparable<T>> {
   }
 
   /**
-   * performs a depth first search of the graph
+   * performs a depth first search of the graph.
    *
    * @return a list of the vertices searched in order
    */
@@ -256,21 +249,9 @@ public class Graph<T extends Comparable<T>> {
       while (!stack.isEmpty()) {
         int vertex = stack.pop();
 
-        // add the vertex
-        visited.add(getVertex(vertex).getValue());
-        discovered.add(vertex);
+        // sort the successors
+        ArrayList<Integer> successors = sort(visited, discovered, vertex);
 
-        // initialise the successors
-        ArrayList<Integer> successors = new ArrayList<Integer>();
-
-        for (Vertex<T> v : getVertex(vertex).getSuccessors()) {
-          if (!discovered.contains(Integer.parseInt((String) v.getValue()))) {
-            successors.add(Integer.parseInt((String) v.getValue()));
-          }
-        }
-
-        // reverse the successors list
-        Collections.sort(successors);
         Collections.reverse(successors);
 
         // add thte successors to the discovered list
@@ -286,10 +267,38 @@ public class Graph<T extends Comparable<T>> {
   }
 
   /**
-   * searches and returns a vertex given an integer (the value of the vertex)
+   * helper function which sorts the discovered, visited vertices and also finds and sorts the
+   * successor vertices.
    *
-   * @param vertex the integer value of the verticies
-   * @return a vertex, the one matching the value of the input
+   * @param visited arraylist containing already visited vertices
+   * @param discovered set containing all discovered vertices
+   * @param vertex a vertex
+   * @return an arraylist of sorted successors
+   */
+  public ArrayList<Integer> sort(ArrayList<T> visited, Set<Integer> discovered, int vertex) {
+    // add the vertex
+    visited.add(getVertex(vertex).getValue());
+    discovered.add(vertex);
+
+    // initialise the successors
+    ArrayList<Integer> successors = new ArrayList<Integer>();
+
+    for (Vertex<T> v : getVertex(vertex).getSuccessors()) {
+      if (!discovered.contains(Integer.parseInt((String) v.getValue()))) {
+        successors.add(Integer.parseInt((String) v.getValue()));
+      }
+    }
+
+    // reverse the successors list
+    Collections.sort(successors);
+    return successors;
+  }
+
+  /**
+   * searches and returns a vertex given an integer (the value of the vertex).
+   *
+   * @param vertex the integer value of the verticies.
+   * @return a vertex, the one matching the value of the input.
    */
   public Vertex<T> getVertex(int vertex) {
 
@@ -303,10 +312,10 @@ public class Graph<T extends Comparable<T>> {
   }
 
   /**
-   * returns a vertrx based on the value of the vertex
+   * returns a vertrx based on the value of the vertex.
    *
-   * @param value the value of the given vertex
-   * @return the vertex the value came from
+   * @param value the value of the given vertex.
+   * @return the vertex the value came from.
    */
   public Vertex<T> getVertex(T value) {
 
@@ -320,9 +329,9 @@ public class Graph<T extends Comparable<T>> {
   }
 
   /**
-   * performs a breadth first search of the graph recursively
+   * performs a breadth first search of the graph recursively.
    *
-   * @return a list of the vertices searched in order
+   * @return a list of the vertices searched in order.
    */
   public List<T> recursiveBreadthFirstSearch() {
     // initialise all lists
@@ -346,7 +355,7 @@ public class Graph<T extends Comparable<T>> {
   }
 
   /**
-   * a helper function which performs a recursive bread first search of one root
+   * a helper function which performs a recursive bread first search of one root.
    *
    * @param root the root to be searched
    * @param visited a list of vertices already visited
@@ -392,9 +401,9 @@ public class Graph<T extends Comparable<T>> {
   }
 
   /**
-   * perfornms a depth first search of the graph recursively
+   * perfornms a depth first search of the graph recursively.
    *
-   * @return a list containig the vertices searched in order
+   * @return a list containig the vertices searched in order.
    */
   public List<T> recursiveDepthFirstSearch() {
     // initialise all lists
@@ -417,11 +426,11 @@ public class Graph<T extends Comparable<T>> {
   }
 
   /**
-   * a helper function which performs a depth first search recursively for one root vertex
+   * a helper function which performs a depth first search recursively for one root vertex.
    *
-   * @param root the root to be searched
-   * @param visited a list of already visited vertices
-   * @param discovered a list of already discovered vertices
+   * @param root the root to be searched.
+   * @param visited a list of already visited vertices.
+   * @param discovered a list of already discovered vertices.
    */
   private void dfs(int root, ArrayList<T> visited, Set<Integer> discovered) {
     // initialise the successors
@@ -453,10 +462,10 @@ public class Graph<T extends Comparable<T>> {
   }
 
   /**
-   * a helper function which converts a list of type T into a list of integers
+   * a helper function which converts a list of type T into a list of integers.
    *
-   * @param list a list to be converted to T tpye
-   * @return a list of integers
+   * @param list a list to be converted to T tpye.
+   * @return a list of integers.
    */
   public List<Integer> sort(List<T> list) {
     // create new list

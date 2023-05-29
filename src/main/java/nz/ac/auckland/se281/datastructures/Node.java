@@ -4,6 +4,11 @@ public class Node<T> {
   protected T value;
   protected Node<T> next;
 
+  /**
+   * constructor for a node, creates a node.
+   *
+   * @param value the value for the node.
+   */
   public Node(T value) {
     // set the value
     this.value = value;
