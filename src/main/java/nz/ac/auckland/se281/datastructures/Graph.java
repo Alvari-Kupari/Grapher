@@ -49,7 +49,7 @@ public class Graph<T extends Comparable<T>> {
 
     for (Vertex<T> v : verticies) {
       // always add the in degree 0 roots
-      if (v.getInDegree() == 0) {
+      if (v.getInDegree() == 0 && v.getOutDegree() > 0) {
         set.add(v.getValue());
       }
     }
