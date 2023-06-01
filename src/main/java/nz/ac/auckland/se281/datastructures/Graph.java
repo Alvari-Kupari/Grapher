@@ -76,31 +76,6 @@ public class Graph<T extends Comparable<T>> {
       rootSet.add(getVertex(i).getValue());
     }
     return rootSet;
-
-    /* // initialise a set
-    Set<T> set = new HashSet<T>();
-
-    for (Vertex<T> v : verticies) {
-      // always add the in degree 0 roots
-      if (v.getInDegree() == 0 && v.getOutDegree() > 0) {
-        set.add(v.getValue());
-      }
-    }
-
-    if (isEquivalence()) {
-      // if equivalence relation we can add self loops
-      for (Vertex<T> v : verticies) {
-        Set<Integer> tempSet = new HashSet<>();
-
-        // convert the equivalence set to integers
-        for (T t : v.getEquivalenceSet()) {
-          tempSet.add(Integer.parseInt((String) getVertex(t).getValue()));
-        }
-        // add the minimum
-        set.add(getVertex(Collections.min(tempSet)).getValue());
-      }
-    }
-    return set; */
   }
 
   /**
