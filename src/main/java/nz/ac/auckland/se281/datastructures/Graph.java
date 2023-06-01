@@ -216,7 +216,7 @@ public class Graph<T extends Comparable<T>> {
       while (!queue.isEmpty()) {
         int vertex = queue.deQueue();
 
-        ArrayList<Integer> successors = sort(visited, discovered, vertex);
+        ArrayList<Integer> successors = sortSuccessors(visited, discovered, vertex);
 
         // add thte successors to the discovered list
         discovered.addAll(successors);
@@ -258,7 +258,7 @@ public class Graph<T extends Comparable<T>> {
         int vertex = stack.pop();
 
         // sort the successors
-        ArrayList<Integer> successors = sort(visited, discovered, vertex);
+        ArrayList<Integer> successors = sortSuccessors(visited, discovered, vertex);
 
         Collections.reverse(successors);
 
@@ -283,7 +283,8 @@ public class Graph<T extends Comparable<T>> {
    * @param vertex a vertex
    * @return an arraylist of sorted successors
    */
-  public ArrayList<Integer> sort(ArrayList<T> visited, Set<Integer> discovered, int vertex) {
+  public ArrayList<Integer> sortSuccessors(
+      ArrayList<T> visited, Set<Integer> discovered, int vertex) {
     // add the vertex
     visited.add(getVertex(vertex).getValue());
     discovered.add(vertex);
