@@ -3,6 +3,7 @@ package nz.ac.auckland.se281.datastructures;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -44,7 +45,39 @@ public class Graph<T extends Comparable<T>> {
    * @return set of roots of the graph.
    */
   public Set<T> getRoots() {
-    // initialise a set
+    List<Integer> roots = new ArrayList<>();
+
+    for (Vertex<T> v : verticies) {
+      // always add the in degree 0 roots
+      if (v.getInDegree() == 0 && v.getOutDegree() > 0) {
+        roots.add(Integer.parseInt((String) v.getValue()));
+      }
+    }
+
+    if (isEquivalence()) {
+      // if equivalence relation we can add self loops
+      for (Vertex<T> v : verticies) {
+        List<Integer> temp = new ArrayList<>();
+
+        // convert the equivalence set to integers
+        for (T t : v.getEquivalenceSet()) {
+          temp.add(Integer.parseInt((String) t));
+        }
+        // add the minimum
+        roots.add(Collections.min(temp));
+      }
+    }
+    // order the roots
+    Collections.sort(roots);
+
+    // convert roots to t type
+    Set<T> rootSet = new LinkedHashSet<>();
+    for (int i : roots) {
+      rootSet.add(getVertex(i).getValue());
+    }
+    return rootSet;
+
+    /* // initialise a set
     Set<T> set = new HashSet<T>();
 
     for (Vertex<T> v : verticies) {
@@ -67,7 +100,7 @@ public class Graph<T extends Comparable<T>> {
         set.add(getVertex(Collections.min(tempSet)).getValue());
       }
     }
-    return set;
+    return set; */
   }
 
   /**
