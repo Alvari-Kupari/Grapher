@@ -1,8 +1,13 @@
 package nz.ac.auckland.se281.datastructures;
 
+/**
+ * A stack is a datastructure which. uses nodes to create a "stack" of objects. Nodes can be
+ * inserted and deleted only from the top of the stack.
+ */
 public class Stack<T> {
   private Node<T> head;
 
+  /** constructor for a stack. initializes the next node to be null. */
   public Stack() {
     head = null;
   }

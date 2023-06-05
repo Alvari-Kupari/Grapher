@@ -1,5 +1,9 @@
 package nz.ac.auckland.se281.datastructures;
 
+/**
+ * A node is an object which stores information about . the value it is currently on, and also
+ * stores information about the next node.
+ */
 public class Node<T> {
   protected T value;
   protected Node<T> next;

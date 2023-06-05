@@ -1,9 +1,11 @@
 package nz.ac.auckland.se281.datastructures;
 
+/** A queue is a data structure which is first in. first out. It uses doublenodes to do this. */
 public class Queue<T> {
   private DoubleNode<T> last;
   private DoubleNode<T> first;
 
+  /** constructor for a queue. initialises head and tail to be null. */
   public Queue() {
     first = null;
     last = null;

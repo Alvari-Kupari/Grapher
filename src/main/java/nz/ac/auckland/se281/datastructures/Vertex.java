@@ -4,6 +4,10 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
+/**
+ * A vertex is an object which stores. information about the vertex in a graph. including its
+ * neighbours.
+ */
 public class Vertex<T> {
   private T val;
   private int inDegree;

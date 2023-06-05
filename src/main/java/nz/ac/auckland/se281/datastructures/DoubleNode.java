@@ -1,5 +1,9 @@
 package nz.ac.auckland.se281.datastructures;
 
+/**
+ * A double node is a data structure. it has information about its value. as well as the next and
+ * previous nodes.
+ */
 public class DoubleNode<T> {
   private DoubleNode<T> previous;
   private DoubleNode<T> next;
